@@ -1,5 +1,6 @@
 package com.example.trainermicroservice.service.implementation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -8,11 +9,19 @@ import com.example.trainermicroservice.model.TrainerMonthlySummary;
 import com.example.trainermicroservice.model.TrainerMonthlySummaryRequest;
 import com.example.trainermicroservice.model.TrainerWorkload;
 import com.example.trainermicroservice.model.TrainerWorkloadRequest;
+import com.example.trainermicroservice.model.Document.MonthDocument;
+import com.example.trainermicroservice.model.Document.Trainer;
+import com.example.trainermicroservice.model.Document.YearDocument;
 import com.example.trainermicroservice.model.TrainerWorkloadRequest.ActionType;
+import com.example.trainermicroservice.service.DAO.TrainerDao;
 import com.example.trainermicroservice.service.interfaces.TrainerService;
 
 @Service
 public class TrainerServiceImpl implements TrainerService {
+
+    @Autowired
+    private TrainerDao trainerDao;
+
     private Map<String, List<TrainerWorkload>> data = new HashMap<>();
 
     @Override
@@ -77,6 +86,66 @@ public class TrainerServiceImpl implements TrainerService {
             if (workloads == null) {
                 workloads = new ArrayList<>();
                 data.put(request.getTrainerUsername(), workloads);
+            }
+
+            Trainer trainer = trainerDao.findByUsername(request.getTrainerUsername());
+            if (trainer == null) {
+                trainer = new Trainer();
+                trainer.setUsername(request.getTrainerUsername());
+                trainer.setFirstName(request.getTrainerFirstName());
+                trainer.setLastName(request.getTrainerLastName());
+                trainer.setStatus(request.isActive());
+
+                Integer duration = request.getTrainingDuration();
+
+                MonthDocument monthDocument = new MonthDocument();
+                monthDocument.setDuration(duration);
+                monthDocument.setMonth(request.getTrainingDate().getMonthValue());
+
+                Set<MonthDocument> months = new HashSet<>();
+                months.add(monthDocument);
+
+                YearDocument yearDocument = new YearDocument();
+                yearDocument.setMonths(months);
+                yearDocument.setYear(request.getTrainingDate().getYear());
+
+                Set<YearDocument> years = new HashSet<>();
+                years.add(yearDocument);
+
+                trainer.setYearsList(years);
+
+                trainerDao.insert(trainer);
+            } else {
+                Optional<YearDocument> yearDoc = trainer.getYearsList().stream()
+                        .filter(y -> y.getYear().equals(request.getTrainingDate().getYear()))
+                        .findFirst();
+                if (yearDoc.isPresent()) {
+                    Optional<MonthDocument> monthDoc = yearDoc.get().getMonths().stream()
+                            .filter(m -> m.getMonth().equals(request.getTrainingDate().getMonthValue()))
+                            .findFirst();
+                    if (monthDoc.isPresent()) {
+                        monthDoc.get().setDuration(monthDoc.get().getDuration() + request.getTrainingDuration());
+                    } else {
+                        Integer duration = request.getTrainingDuration();
+
+                        MonthDocument monthDocument = new MonthDocument();
+                        monthDocument.setDuration(duration);
+                        monthDocument.setMonth(request.getTrainingDate().getMonthValue());
+
+                        yearDoc.get().getMonths().add(monthDocument);
+                    }
+                } else {
+                    Set<MonthDocument> months = new HashSet<>();
+                    months.add(new MonthDocument(request.getTrainingDate().getMonthValue(),
+                            request.getTrainingDuration()));
+
+                    YearDocument yearDocument = new YearDocument();
+                    yearDocument.setMonths(months);
+                    yearDocument.setYear(request.getTrainingDate().getYear());
+
+                    trainer.getYearsList().add(yearDocument);
+                }
+                trainerDao.save(trainer);
             }
 
             workloads.add(trainerWorkload);
