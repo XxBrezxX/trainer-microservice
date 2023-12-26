@@ -8,4 +8,5 @@ import com.example.trainermicroservice.model.TrainerWorkload;
 public interface TrainerService {
     TrainerMonthlySummary calculateMonthlySummary(TrainerMonthlySummaryRequest trainerMonthlySummaryRequest);
     TrainerWorkload addWorkload(TrainerWorkloadRequest request);
+    Boolean deleteEverything();
 }

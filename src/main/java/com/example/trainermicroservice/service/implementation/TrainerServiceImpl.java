@@ -19,8 +19,8 @@ import com.example.trainermicroservice.service.interfaces.TrainerService;
 @Service
 public class TrainerServiceImpl implements TrainerService {
 
-    // @Autowired
-    // private TrainerDao trainerDao;
+    @Autowired
+    private TrainerDao trainerDao;
 
     private Map<String, List<TrainerWorkload>> data = new HashMap<>();
 
@@ -88,65 +88,65 @@ public class TrainerServiceImpl implements TrainerService {
                 data.put(request.getTrainerUsername(), workloads);
             }
 
-            // Trainer trainer = trainerDao.findByUsername(request.getTrainerUsername());
-            // if (trainer == null) {
-            //     trainer = new Trainer();
-            //     trainer.setUsername(request.getTrainerUsername());
-            //     trainer.setFirstName(request.getTrainerFirstName());
-            //     trainer.setLastName(request.getTrainerLastName());
-            //     trainer.setStatus(request.isActive());
+            Trainer trainer = trainerDao.findByUsername(request.getTrainerUsername());
+            if (trainer == null) {
+                trainer = new Trainer();
+                trainer.setUsername(request.getTrainerUsername());
+                trainer.setFirstName(request.getTrainerFirstName());
+                trainer.setLastName(request.getTrainerLastName());
+                trainer.setStatus(request.isActive());
 
-            //     Integer duration = request.getTrainingDuration();
+                Integer duration = request.getTrainingDuration();
 
-            //     MonthDocument monthDocument = new MonthDocument();
-            //     monthDocument.setDuration(duration);
-            //     monthDocument.setMonth(request.getTrainingDate().getMonthValue());
+                MonthDocument monthDocument = new MonthDocument();
+                monthDocument.setDuration(duration);
+                monthDocument.setMonth(request.getTrainingDate().getMonthValue());
 
-            //     Set<MonthDocument> months = new HashSet<>();
-            //     months.add(monthDocument);
+                Set<MonthDocument> months = new HashSet<>();
+                months.add(monthDocument);
 
-            //     YearDocument yearDocument = new YearDocument();
-            //     yearDocument.setMonths(months);
-            //     yearDocument.setYear(request.getTrainingDate().getYear());
+                YearDocument yearDocument = new YearDocument();
+                yearDocument.setMonths(months);
+                yearDocument.setYear(request.getTrainingDate().getYear());
 
-            //     Set<YearDocument> years = new HashSet<>();
-            //     years.add(yearDocument);
+                Set<YearDocument> years = new HashSet<>();
+                years.add(yearDocument);
 
-            //     trainer.setYearsList(years);
+                trainer.setYearsList(years);
 
-            //     trainerDao.insert(trainer);
-            // } else {
-            //     Optional<YearDocument> yearDoc = trainer.getYearsList().stream()
-            //             .filter(y -> y.getYear().equals(request.getTrainingDate().getYear()))
-            //             .findFirst();
-            //     if (yearDoc.isPresent()) {
-            //         Optional<MonthDocument> monthDoc = yearDoc.get().getMonths().stream()
-            //                 .filter(m -> m.getMonth().equals(request.getTrainingDate().getMonthValue()))
-            //                 .findFirst();
-            //         if (monthDoc.isPresent()) {
-            //             monthDoc.get().setDuration(monthDoc.get().getDuration() + request.getTrainingDuration());
-            //         } else {
-            //             Integer duration = request.getTrainingDuration();
+                trainerDao.insert(trainer);
+            } else {
+                Optional<YearDocument> yearDoc = trainer.getYearsList().stream()
+                        .filter(y -> y.getYear().equals(request.getTrainingDate().getYear()))
+                        .findFirst();
+                if (yearDoc.isPresent()) {
+                    Optional<MonthDocument> monthDoc = yearDoc.get().getMonths().stream()
+                            .filter(m -> m.getMonth().equals(request.getTrainingDate().getMonthValue()))
+                            .findFirst();
+                    if (monthDoc.isPresent()) {
+                        monthDoc.get().setDuration(monthDoc.get().getDuration() + request.getTrainingDuration());
+                    } else {
+                        Integer duration = request.getTrainingDuration();
 
-            //             MonthDocument monthDocument = new MonthDocument();
-            //             monthDocument.setDuration(duration);
-            //             monthDocument.setMonth(request.getTrainingDate().getMonthValue());
+                        MonthDocument monthDocument = new MonthDocument();
+                        monthDocument.setDuration(duration);
+                        monthDocument.setMonth(request.getTrainingDate().getMonthValue());
 
-            //             yearDoc.get().getMonths().add(monthDocument);
-            //         }
-            //     } else {
-            //         Set<MonthDocument> months = new HashSet<>();
-            //         months.add(new MonthDocument(request.getTrainingDate().getMonthValue(),
-            //                 request.getTrainingDuration()));
+                        yearDoc.get().getMonths().add(monthDocument);
+                    }
+                } else {
+                    Set<MonthDocument> months = new HashSet<>();
+                    months.add(new MonthDocument(request.getTrainingDate().getMonthValue(),
+                            request.getTrainingDuration()));
 
-            //         YearDocument yearDocument = new YearDocument();
-            //         yearDocument.setMonths(months);
-            //         yearDocument.setYear(request.getTrainingDate().getYear());
+                    YearDocument yearDocument = new YearDocument();
+                    yearDocument.setMonths(months);
+                    yearDocument.setYear(request.getTrainingDate().getYear());
 
-            //         trainer.getYearsList().add(yearDocument);
-            //     }
-            //     trainerDao.save(trainer);
-            // }
+                    trainer.getYearsList().add(yearDocument);
+                }
+                trainerDao.save(trainer);
+            }
 
             workloads.add(trainerWorkload);
         } else {
@@ -160,6 +160,13 @@ public class TrainerServiceImpl implements TrainerService {
         }
         System.out.println("$$$$$$$$$:".concat(workloads.size() + ""));
         return trainerWorkload;
+    }
+
+    @Override
+    public Boolean deleteEverything() {
+        data = new HashMap<>();
+
+        return data.size() == 0;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.trainermicroservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,5 +45,11 @@ public class TrainerController {
         HttpStatus responseStatus = workload == null ? HttpStatus.BAD_REQUEST : HttpStatus.ACCEPTED;
 
         return new ResponseEntity<>(workload, responseStatus);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteAll() {
+        return trainerServiceImpl.deleteEverything() ? ResponseEntity.ok().body(null)
+                : ResponseEntity.badRequest().body(null);
     }
 }
