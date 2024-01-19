@@ -1,0 +1,34 @@
+docker-compose up: Crea e inicia contenedores. Si ya están creados, los reinicia con cualquier cambio que hayas hecho en tu archivo docker-compose.yml.
+
+docker-compose down: Detiene y elimina los contenedores, redes y volúmenes definidos en tu archivo docker-compose.yml.
+
+docker-compose start: Inicia los servicios especificados.
+
+docker-compose stop: Detiene los servicios especificados.
+
+docker-compose restart: Reinicia los servicios especificados.
+
+docker-compose pause: Pausa los servicios especificados.
+
+docker-compose unpause: Reanuda los servicios especificados.
+
+docker-compose build: Construye o reconstruye los servicios especificados.
+
+docker-compose pull: Descarga las imágenes de los servicios especificados.
+
+docker-compose push: Sube las imágenes de los servicios especificados a un registro de Docker.
+
+docker-compose run: Ejecuta un comando de un solo uso para un servicio.
+
+docker-compose exec: Ejecuta un comando en un servicio en ejecución.
+
+docker-compose logs: Muestra los registros de los servicios especificados.
+
+docker-compose ps: Lista los contenedores en ejecución.
+
+docker-compose config: Valida y muestra la configuración de Compose.
+
+docker-compose top: Muestra los procesos en ejecución para un servicio.
+
+docker-compose rm: Elimina los contenedores detenidos.
+

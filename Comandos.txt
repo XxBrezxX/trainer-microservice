@@ -1,0 +1,41 @@
+1. `docker run`: Ejecuta un contenedor a partir de una imagen de Docker.
+   Ejemplo: `docker run ubuntu:latest`
+
+2. `docker build`: Construye una imagen de Docker a partir de un Dockerfile.
+   Ejemplo: `docker build -t mi_imagen .`
+
+3. `docker ps`: Muestra los contenedores de Docker que se están ejecutando actualmente.
+   Ejemplo: `docker ps`
+
+4. `docker stop`: Detiene un contenedor de Docker en ejecución.
+   Ejemplo: `docker stop mi_contenedor`
+
+5. `docker rm`: Elimina un contenedor de Docker.
+   Ejemplo: `docker rm mi_contenedor`
+
+6. `docker rmi`: Elimina una imagen de Docker.
+   Ejemplo: `docker rmi mi_imagen`
+
+7. `docker images`: Muestra las imágenes de Docker disponibles localmente.
+   Ejemplo: `docker images`
+
+8. `docker pull`: Descarga una imagen de Docker desde un repositorio remoto.
+   Ejemplo: `docker pull ubuntu:latest`
+
+9. `docker push`: Sube una imagen de Docker a un repositorio remoto.
+   Ejemplo: `docker push mi_usuario/mi_imagen`
+
+10. `docker exec`: Ejecuta un comando en un contenedor de Docker en ejecución.
+    Ejemplo: `docker exec mi_contenedor echo "Hola Mundo"`
+
+11. `docker logs`: Muestra los registros de un contenedor de Docker.
+    Ejemplo: `docker logs mi_contenedor`
+
+12. `docker tag`: Asigna una etiqueta a una imagen de Docker.
+    Ejemplo: `docker tag mi_imagen mi_usuario/mi_imagen:mi_etiqueta`
+
+13. `docker volume create`: Crea un volumen de Docker para almacenar datos.
+    Ejemplo: `docker volume create mi_volumen`
+
+14. `docker network create`: Crea una red de Docker para conectar contenedores.
+    Ejemplo: `docker network create mi_red`

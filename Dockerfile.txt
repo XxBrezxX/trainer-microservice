@@ -1,0 +1,35 @@
+1. `FROM`: Establece la imagen base para la construcción.
+   Ejemplo: `FROM ubuntu:latest`
+
+2. `RUN`: Ejecuta un comando durante la construcción de la imagen.
+   Ejemplo: `RUN apt-get update && apt-get install -y curl`
+
+3. `CMD`: Establece el comando predeterminado que se ejecutará cuando se inicie un contenedor a partir de la imagen.
+   Ejemplo: `CMD ["echo", "Hola Mundo"]`
+
+4. `ENTRYPOINT`: Establece el comando que se ejecutará cuando se inicie un contenedor a partir de la imagen. A diferencia de `CMD`, los argumentos de `ENTRYPOINT` no se pueden sobrescribir con `docker run`.
+   Ejemplo: `ENTRYPOINT ["echo"]`
+
+5. `COPY`: Copia archivos o directorios desde el sistema de archivos local al sistema de archivos de la imagen.
+   Ejemplo: `COPY ./mi_app /app`
+
+6. `ADD`: Similar a `COPY`, pero también puede descargar archivos de URLs y descomprimir archivos tar.
+   Ejemplo: `ADD https://example.com/mi_archivo.tar.gz /app`
+
+7. `WORKDIR`: Establece el directorio de trabajo para las instrucciones `RUN`, `CMD`, `ENTRYPOINT`, `COPY` y `ADD` que siguen en el Dockerfile.
+   Ejemplo: `WORKDIR /app`
+
+8. `EXPOSE`: Informa a Docker que el contenedor escuchará en los puertos de red especificados en tiempo de ejecución.
+   Ejemplo: `EXPOSE 80`
+
+9. `ENV`: Establece variables de entorno que estarán disponibles para los procesos que se ejecutan en los contenedores basados en la imagen.
+   Ejemplo: `ENV MI_VARIABLE=mi_valor`
+
+10. `ARG`: Define argumentos que pueden ser proporcionados en tiempo de construcción con el comando `docker build`.
+    Ejemplo: `ARG MI_ARG=valor_predeterminado`
+
+11. `USER`: Establece el usuario (o UID) que se utilizará cuando se ejecuten el `RUN`, `CMD` y `ENTRYPOINT`.
+    Ejemplo: `USER mi_usuario`
+
+12. `VOLUME`: Crea un punto de montaje para un volumen de Docker, que puede ser utilizado para almacenar datos en el sistema de archivos del host o en otros contenedores.
+    Ejemplo: `VOLUME /mis_datos`
